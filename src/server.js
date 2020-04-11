@@ -5,9 +5,18 @@ const Sequelize = require('sequelize')
 const finale = require('finale-rest')
 const OktaJwtVerifier = require('@okta/jwt-verifier')
 
+require('dotenv').config();
+const oktaClientId = process.env.OKTA_CLIENT_ID;
+const oktaIssuer = process.env.OKTA_ISSUER;
+
+const dbHost = process.env.DATABASE_HOST;
+const dbPort = process.env.DATABASE_PORT;
+const dbUser = process.env.DATABASE_USER;
+const dbPassword = process.env.DATABASE_PASSWORD;
+
 const oktaJwtVerifier = new OktaJwtVerifier({
-  clientId: '0oa5nfl2jp46kSZDR4x6',
-  issuer: 'https://dev-191564.okta.com/oauth2/default'
+  clientId: oktaClientId,
+  issuer: oktaIssuer
 })
 
 let app = express()
