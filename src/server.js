@@ -42,17 +42,18 @@ app.use((req, res, next) => {
     .catch(next) // jwt did not verify!
 })
 
-// sqllite database
-let database = new Sequelize({
-  dialect: 'sqlite',
-  storage: './f45.sqlite'
+// mysql database
+let database = new Sequelize('hiithelper', dbUser, dbPassword, {
+  host: dbHost,
+  dialect: 'mysql'
 })
 
-// Define our Post model
-// id, createdAt, and updatedAt are added by sequelize automatically
-let Post = database.define('posts', {
-  title: Sequelize.STRING,
-  body: Sequelize.TEXT
+// Define our Exercise model
+// contains, exercise_name, exercise_description, exercise_image_url
+let Exercise = database.define('exercises', {
+  exercise_name: Sequelize.STRING,
+  exercise_description: Sequelize.STRING(2048),
+  exercise_image_url: Sequelize.STRING(2048)
 })
 
 // Initialize finale
@@ -61,10 +62,10 @@ finale.initialize({
   sequelize: database
 })
 
-// Create the dynamic REST resource for our Post model
+// Create the dynamic REST resource for our Exercise model
 let userResource = finale.resource({
-  model: Post,
-  endpoints: ['/posts', '/posts/:id']
+  model: Exercise,
+  endpoints: ['/exercises', '/exercises/:id']
 })
 
 // Resets the database and launches the express app on :8081
